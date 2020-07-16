@@ -58,17 +58,9 @@ class Extension extends CompilerExtension
                     ->addSetup('$service->addProvider("assetsPathProvider",?)', [$this->provider]);
             }
             if ($config['macro']) {
-                $this->addMacro(Macros::class . '::install', $config['macro']);
+                $definition = $factory->getResultDefinition();
+                $definition->addSetup('?->onCompile[] = function ($engine) { ?($engine->getCompiler(),?); }', ['@self', Macros::class . '::install', $config['macro']]);
             }
-        }
-    }
-
-    public function addMacro(string $macro, string $name): void
-    {
-        $builder = $this->getContainerBuilder();
-        if (class_exists(Engine::class)) {
-            $definition = $builder->getDefinition('latte.latteFactory')->getResultDefinition();
-            $definition->addSetup('?->onCompile[] = function ($engine) { ?($engine->getCompiler(),?); }', ['@self', $macro, $name]);
         }
     }
 
