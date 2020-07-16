@@ -10,14 +10,7 @@ extensions:
     assets: Prosky\NetteWebpack\Extension
 ```
 
-2. Add Macros
-```neon
-latte:
-    macros:
-        - Prosky\NetteWebpack\Macros::install('asset')
-```
-
-3. Configure assets. For Example
+2. Configure assets. For Example
 
 Local Development configuration
 ```neon
@@ -40,6 +33,7 @@ assets:
 Default configuration
 ```neon
 assets:
+    macro: asset
     debugMode: %debugMode%
     wwwDir: %wwwDir%
     publicPath: null
