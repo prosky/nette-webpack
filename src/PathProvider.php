@@ -3,6 +3,7 @@
 namespace Prosky\NetteWebpack;
 
 
+use Nette\Http\Request;
 use stdClass;
 use Generator;
 use Nette\Utils\Json;
@@ -35,32 +36,31 @@ class PathProvider
 	/** @var Cache */
 	protected $cache;
 
-	/**
-	 * AssetsPathProvider constructor.
-	 * @param bool $debugMode
-	 * @param string $wwwDir
-	 * @param string $manifest
-	 * @param IStorage $storage
-	 * @param null|bool $devServer
-	 * @param int|null $devPort
-	 * @param string $publicPath
-	 * @internal param string $buildDir
-	 */
-	public function __construct(bool $debugMode, string $wwwDir, string $manifest, IStorage $storage, ?bool $devServer, ?int $devPort, ?string $publicPath)
-	{
-		$this->debugMode = $debugMode;
-		$this->wwwDir = $wwwDir;
-		$this->publicPath = $publicPath;
-		$this->devServer = $devServer ? self::address($devPort) : null;
-		$this->manifest = $manifest;
-		$this->isAvailable = (bool)$devServer;
-		$this->cache = new Cache($storage, 'assets');
-	}
+    /**  @var bool */
+    protected $debugMode;
 
-	private static function address(?int $devPort): string
-	{
-		return 'http://' . $_SERVER['REMOTE_ADDR'] . ':' . $devPort;
-	}
+    /**
+     * AssetsPathProvider constructor.
+     * @param Request $request
+     * @param bool $debugMode
+     * @param string $wwwDir
+     * @param string $manifest
+     * @param IStorage $storage
+     * @param null|bool $devServer
+     * @param int|null $devPort
+     * @param string $publicPath
+     * @internal param string $buildDir
+     */
+    public function __construct(Request $request, bool $debugMode, string $wwwDir, string $manifest, IStorage $storage, ?bool $devServer, ?int $devPort, ?string $publicPath)
+    {
+        $this->debugMode = $debugMode;
+        $this->wwwDir = $wwwDir;
+        $this->publicPath = $publicPath;
+        $this->devServer = $devServer ? ('http://' . $request->getRemoteAddress(). ':' . $devPort) : null;
+        $this->manifest = $manifest;
+        $this->isAvailable = (bool)$devServer;
+        $this->cache = new Cache($storage, 'assets');
+    }
 
 	/**
 	 * @param string $name
