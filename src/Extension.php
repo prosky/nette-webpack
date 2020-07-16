@@ -21,12 +21,12 @@ class Extension extends CompilerExtension
     {
         $params = $this->getContainerBuilder()->parameters;
         return Expect::structure([
-            'macro'=>Expect::anyOf(false,Expect::string('asset')),
+            'macro' => Expect::anyOf(false, Expect::string('asset')),
             'debugMode' => Expect::bool($params['debugMode']),
             'wwwDir' => Expect::string($params['wwwDir'])->assert('is_dir'),
             'publicPath' => Expect::string()->nullable(),
-            'devServer' => Expect::bool()->nullable(),
-            'devPort' => Expect::int()->nullable(),
+            'devServer' => Expect::bool(false),
+            'devPort' => Expect::int(8080),
             'manifest' => Expect::string('manifest.json')
         ])->castTo('array');
     }
@@ -35,11 +35,12 @@ class Extension extends CompilerExtension
     public function loadConfiguration(): void
     {
         parent::loadConfiguration();
-        $config = $this->getConfig();
+        $config = clone $this->getConfig();
         if (Strings::endsWith($config['publicPath'], '/')) {
             throw new InvalidArgumentException('Please provide public path without ending slash.');
         }
         $builder = $this->getContainerBuilder();
+        unset($config['macro']);
         $this->provider = $builder->addDefinition($this->prefix('provider'))
             ->setFactory(PathProvider::class, $config);
 
@@ -67,7 +68,7 @@ class Extension extends CompilerExtension
         $builder = $this->getContainerBuilder();
         if (class_exists(Engine::class)) {
             $definition = $builder->getDefinition('latte.latteFactory')->getResultDefinition();
-            $definition->addSetup('?->onCompile[] = function ($engine) { ?::install($engine->getCompiler(),?); }', ['@self', $macro,$name]);
+            $definition->addSetup('?->onCompile[] = function ($engine) { ?::install($engine->getCompiler(),?); }', ['@self', $macro, $name]);
         }
     }
 
