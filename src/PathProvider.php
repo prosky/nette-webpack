@@ -51,7 +51,7 @@ class PathProvider
      * @param string $publicPath
      * @internal param string $buildDir
      */
-    public function __construct(Request $request, bool $debugMode, string $wwwDir, string $manifest, IStorage $storage, ?bool $devServer, ?int $devPort, ?string $publicPath)
+    public function __construct(Request $request, bool $debugMode, string $wwwDir, string $manifest, IStorage $storage, bool $devServer, int $devPort, ?string $publicPath)
     {
         $this->debugMode = $debugMode;
         $this->wwwDir = $wwwDir;

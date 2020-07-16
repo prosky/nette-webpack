@@ -35,7 +35,7 @@ class Extension extends CompilerExtension
     public function loadConfiguration(): void
     {
         parent::loadConfiguration();
-        $config = clone $this->getConfig();
+        $config = array_merge($this->getConfig());
         if (Strings::endsWith($config['publicPath'], '/')) {
             throw new InvalidArgumentException('Please provide public path without ending slash.');
         }
@@ -68,7 +68,7 @@ class Extension extends CompilerExtension
         $builder = $this->getContainerBuilder();
         if (class_exists(Engine::class)) {
             $definition = $builder->getDefinition('latte.latteFactory')->getResultDefinition();
-            $definition->addSetup('?->onCompile[] = function ($engine) { ?::install($engine->getCompiler(),?); }', ['@self', $macro, $name]);
+            $definition->addSetup('?->onCompile[] = function ($engine) { ?($engine->getCompiler(),?); }', ['@self', $macro, $name]);
         }
     }
 
