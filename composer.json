@@ -16,15 +16,11 @@
     "nette/schema": "^1.0",
     "nette/caching": "^3.0",
     "latte/latte": "^2.5"
-  }
-  ,
-  "require-dev": {
-    "roave/security-advisories": "dev-master"
   },
   "autoload": {
-    "psr-4": [
-      "./src":"Pro"
-    ]
+    "psr-4": {
+      "Prosky\\NetteWebpack\\": "src/"
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
