@@ -1,0 +1,35 @@
+{
+  "name": "prosky/nette-webpack",
+  "description": "Webpack Bridge for Nette Framework",
+  "type": "project",
+  "license": [
+    "MIT"
+  ],
+  "authors": [
+    {
+      "name": "Jan Proskovec"
+    }
+  ],
+  "require": {
+    "nette/di": "^3.0",
+    "nette/utils": "^3.0",
+    "nette/schema": "^1.0",
+    "nette/caching": "^3.0",
+    "latte/latte": "^2.5"
+  }
+  ,
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  },
+  "autoload": {
+    "psr-4": [
+      "./src":"Pro"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
